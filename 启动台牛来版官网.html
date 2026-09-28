@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>启动台 · 牛来版 — 启动台，还是那个启动台，只是更牛了</title>
+<meta name="description" content="把熟悉的 macOS 启动台重新带回来。简单、顺手、不折腾。完全免费，无会员，无订阅。">
+<link rel="icon" type="image/png" href="assets/app-icon.png">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap">
+<style>
+/* ===== 基础重置 ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; width: 100%; }
+body {
+  font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ===== 设计变量 ===== */
+:root {
+  --text-light: #ffffff;
+  --text-light-secondary: rgba(255,255,255,0.72);
+  --accent-yellow: #fcd34d;
+  --accent-orange: #d97706;
+  --radius-pill: 999px;
+  --radius-xl: 24px;
+  --max-width: 1200px;
+}
+
+/* ===== Hero 区域 ===== */
+.hero-section {
+  background: #1e1b18;
+  position: relative;
+  min-height: 115vh;
+  padding-bottom: 120px;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: -25% 0;
+  background-image: url('assets/background.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  will-change: transform;
+  z-index: 0;
+}
+
+/* ===== 固定顶部导航栏（始终固定，最大宽度800px） ===== */
+.nav-fixed {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 32px;
+}
+.nav {
+  max-width: 800px;
+  margin: 0 auto;
+  height: 56px;
+  background: rgba(40,35,30,0.5);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+}
+.nav-left { display: flex; align-items: center; gap: 10px; }
+.nav-logo-img {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+.nav-logo-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: -0.01em;
+}
+.nav-logo-text .accent { color: var(--accent-yellow); }
+.nav-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: #ffffff;
+  border-radius: var(--radius-pill);
+  transition: transform 0.15s ease;
+}
+.nav-download-btn svg { width: 14px; height: 14px; }
+
+/* ===== Hero 内容 ===== */
+.hero-content {
+  position: relative;
+  z-index: 5;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 130px 32px 0;
+  text-align: center;
+  will-change: transform, opacity;
+}
+
+/* macOS 27 徽章 */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 6px;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius-pill);
+  margin-bottom: 28px;
+}
+.hero-badge-icon {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-badge-icon img { width: 100%; height: 100%; object-fit: cover; }
+.hero-badge-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light-secondary);
+}
+
+/* 超大标题 */
+.hero-title {
+  font-size: clamp(36px, 5.5vw, 64px);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+.hero-title-line { display: block; }
+.hero-title-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.hero-title-icon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: middle;
+  border-radius: 22%;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  transform: rotate(15deg);
+}
+.hero-title .yellow { color: var(--accent-yellow); }
+
+.hero-sub {
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: var(--text-light-secondary);
+  line-height: 1.75;
+  margin-bottom: 32px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 56px;
+}
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.btn-download svg { width: 16px; height: 16px; }
+
+/* 启动台截图展示 */
+.hero-screenshot-wrap {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  will-change: transform;
+  perspective: 1200px;
+}
+.hero-screenshot {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: visible;
+  box-shadow: 0 16px 56px rgba(0,0,0,0.3), 0 40px 100px rgba(0,0,0,0.18);
+  border: 1px solid transparent;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+.hero-screenshot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-xl);
+}
+.hero-screenshot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(113deg, rgba(255, 255, 255, 0.50) -0.01%, rgba(255, 255, 255, 0.10) 24.99%, rgba(255, 255, 255, 0.70) 49.99%, rgba(255, 255, 255, 0.00) 74.99%, rgba(255, 255, 255, 0.60) 99.99%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+.hero-cow {
+  position: absolute;
+  bottom: -60px;
+  right: -30px;
+  width: 250px;
+  z-index: 3;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.25));
+  animation: cowFloat 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cowFloat {
+  0%, 100% { transform: rotate(-3deg) translateY(0); }
+  50% { transform: rotate(-1deg) translateY(-8px); }
+}
+.hero-cow img { width: 100%; height: auto; pointer-events: none; }
+.hero-cow::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.hero-credit {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(0,0,0,0.45);
+  letter-spacing: 0.02em;
+  position: relative;
+  z-index: 5;
+}
+.hero-credit span { color: var(--accent-orange); font-weight: 600; }
+
+/* ===== 功能介绍区域（Liquid Glass） ===== */
+.features-section {
+  background: linear-gradient(180deg, #f8f6f2 0%, #f0ece4 100%);
+  padding: 140px 32px;
+  position: relative;
+}
+.features-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 56px;
+  align-items: stretch;
+}
+
+/* 左侧 - 直接展示，不包卡片 */
+.features-left {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.features-title {
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin-bottom: 36px;
+  flex-shrink: 0;
+}
+.feature-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.feature-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  position: relative;
+  opacity: 0.45;
+  transition: opacity 0.4s ease, color 0.3s ease;
+}
+.feature-item:first-child { border-top: none; padding-top: 0; }
+.feature-item:last-child { padding-bottom: 0; }
+.feature-item.active {
+  opacity: 1;
+}
+.feature-item.active::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 50%;
+  background: #1a1a1a;
+  border-radius: 2px;
+}
+.feature-item.active .feature-icon,
+.feature-item.active .feature-name { color: #1a1a1a; }
+.feature-item.active .feature-desc { color: #6b7280; }
+.feature-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.feature-icon {
+  width: 24px;
+  height: 24px;
+  color: #c0c0c0;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.feature-icon svg { width: 100%; height: 100%; }
+.feature-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #c0c0c0;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+.feature-desc {
+  font-size: 15px;
+  color: #c0c0c0;
+  line-height: 1.7;
+  padding-left: 0;
+  transition: color 0.3s ease;
+}
+
+/* 右侧 - Liquid Glass 展示卡片 */
+.features-right {
+  position: relative;
+  will-change: transform;
+  margin-top: 143px;
+  display: flex;
+  flex-direction: column;
+}
+.feature-showcase {
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 28px;
+  padding: 0;
+  width: 100%;
+  aspect-ratio: 1448 / 1086;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+.feature-showcase-img {
+  width: 100%;
+  height: 100%;
+  margin-left: 0;
+  border-radius: 28px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.feature-showcase-img.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== 收尾 CTA 区域 ===== */
+.cta-section {
+  background: #ffffff;
+  padding: 120px 32px;
+  text-align: center;
+  position: relative;
+}
+.cta-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.cta-title {
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+.cta-sub {
+  font-size: clamp(15px, 1.5vw, 18px);
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 32px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+.btn-primary svg { width: 16px; height: 16px; }
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 28px;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid #e5e5e5;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  border-color: #d4d4d4;
+  background: #fafafa;
+}
+.btn-secondary svg { width: 16px; height: 16px; }
+
+/* ===== 收款码弹窗 ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding: 20px;
+}
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px 32px 32px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-card {
+  transform: translateY(0) scale(1);
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border: none;
+}
+.modal-close:hover { background: rgba(0,0,0,0.06); }
+.modal-close svg { width: 18px; height: 18px; color: #666; }
+.modal-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+.modal-desc {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-bottom: 24px;
+}
+.modal-qrcode {
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.modal-qrcode img { width: 100%; height: auto; display: block; }
+.modal-tip {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* ===== 滚动进入动画 ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-break { display: none; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 860px) {
+  .mobile-break { display: block; }
+  .nav-fixed { padding: 0 12px; top: 10px; }
+  .nav { height: 48px; padding: 0 8px 0 14px; max-width: 100%; }
+  .nav-glass { width: 100% !important; max-width: 100% !important; }
+  .nav-logo-img { width: 26px; height: 26px; }
+  .nav-logo-text { font-size: 13px; }
+  .nav-download-btn { padding: 7px 16px; font-size: 13px; }
+
+  .hero-content { padding: 90px 16px 0; }
+  .hero-badge { margin-bottom: 22px; padding: 5px 14px 5px 5px; }
+  .hero-badge-icon { width: 22px; height: 22px; }
+  .hero-badge-text { font-size: 12px; }
+  .hero-title { font-size: 30px; }
+  .hero-title-inline { gap: 10px; }
+  .hero-sub { font-size: 15px; margin-bottom: 26px; }
+  .hero-actions { margin-bottom: 40px; }
+  .btn-download { padding: 12px 30px; font-size: 15px; }
+  .hero-screenshot-wrap { max-width: 100%; padding: 0; }
+  .hero-screenshot { width: 100%; }
+  .hero-cow { width: 145px; bottom: -40px; right: -6px; }
+  .hero-cow::after { width: 116px; height: 116px; }
+  .hero-credit { margin-top: 36px; font-size: 12px; }
+
+  .features-section { padding: 60px 16px; }
+  .features-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .features-left { padding-top: 0; display: block; }
+  .features-right { margin-top: 0; padding: 0; }
+  .features-title { margin-bottom: 24px; font-size: 26px; }
+  .feature-list { display: block; }
+  .feature-item { flex: none; display: block; padding: 28px 0; }
+  .feature-item:first-child { padding-top: 0; }
+  .feature-item:last-child { padding-bottom: 0; }
+  .feature-name { font-size: 18px; }
+  .feature-desc { font-size: 13px; padding-left: 0; }
+  .feature-showcase { min-height: auto; aspect-ratio: 1448/1086; padding: 0; }
+  .feature-showcase-img {
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .cta-section { padding: 60px 20px 160px; }
+  .cta-title { font-size: 24px; }
+  .cta-sub { font-size: 14px; margin-bottom: 32px; }
+  .btn-primary, .btn-secondary { padding: 12px 28px; font-size: 14px; }
+  .modal-card { padding: 28px 24px 24px; }
+}
+
+@media (max-width: 400px) {
+  .hero-title { font-size: 27px; }
+}
+
+/* ===== 减少动效偏好 ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+  .hero-cow { animation: none; }
+}
+
+/* ===== 图标 Hover 精确动画 ===== */
+
+/* --- 下载图标：箭头往下移动，托盘不动 --- */
+.nav-download-btn:hover svg polyline,
+.nav-download-btn:hover svg line,
+.btn-download:hover svg polyline,
+.btn-download:hover svg line,
+.btn-primary:hover svg polyline,
+.btn-primary:hover svg line {
+  transform: translateY(3px);
+  transition: transform 0.25s ease;
+}
+.nav-download-btn svg polyline,
+.nav-download-btn svg line,
+.btn-download svg polyline,
+.btn-download svg line,
+.btn-primary svg polyline,
+.btn-primary svg line {
+  transition: transform 0.25s ease;
+}
+
+/* --- 心形图标：心跳缩放 --- */
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.22); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(1); }
+}
+.btn-secondary:hover svg {
+  animation: heartBeat 0.85s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* --- 原生体验（星形）：大星星变填充，小星星闪烁 --- */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+/* 大星星（第1个path）变填充 */
+.feature-item[data-index="0"]:hover .feature-icon svg path:first-child {
+  fill: currentColor;
+  transition: fill 0.3s ease;
+}
+.feature-item[data-index="0"] .feature-icon svg path:first-child {
+  transition: fill 0.3s ease;
+}
+/* 右上小星星（第2、3个path）闪烁 */
+.feature-item[data-index="0"]:hover .feature-icon svg path:nth-child(2),
+.feature-item[data-index="0"]:hover .feature-icon svg path:nth-child(3) {
+  animation: twinkle 0.55s ease-in-out infinite;
+}
+/* 左下小星星（第4、5个path）闪烁，错开相位 */
+.feature-item[data-index="0"]:hover .feature-icon svg path:nth-child(4),
+.feature-item[data-index="0"]:hover .feature-icon svg path:nth-child(5) {
+  animation: twinkle 0.55s ease-in-out infinite 0.28s;
+}
+
+/* --- 随手启动（键盘）：按键有节奏透明度变化 --- */
+@keyframes keyBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+/* 第2-9个path是按键，依次闪烁 */
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(2) { animation: keyBlink 0.7s ease-in-out infinite; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(3) { animation: keyBlink 0.7s ease-in-out infinite 0.08s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(4) { animation: keyBlink 0.7s ease-in-out infinite 0.16s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(5) { animation: keyBlink 0.7s ease-in-out infinite 0.24s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(6) { animation: keyBlink 0.7s ease-in-out infinite 0.32s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(7) { animation: keyBlink 0.7s ease-in-out infinite 0.40s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(8) { animation: keyBlink 0.7s ease-in-out infinite 0.48s; }
+.feature-item[data-index="1"]:hover .feature-icon svg path:nth-child(9) { animation: keyBlink 0.7s ease-in-out infinite 0.56s; }
+
+/* --- 自由布局（layout-panel-left）：进场动画 --- */
+@keyframes slideInLeft {
+  0% { transform: translateX(-18px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInTop {
+  0% { transform: translateY(-18px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes slideInBottom {
+  0% { transform: translateY(18px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+/* 左侧长条：从左进场 */
+.feature-item[data-index="2"]:hover .feature-icon svg rect:nth-child(1) {
+  animation: slideInLeft 0.4s ease-out forwards;
+}
+/* 右上方格：从上进场 */
+.feature-item[data-index="2"]:hover .feature-icon svg rect:nth-child(2) {
+  animation: slideInTop 0.4s ease-out 0.1s forwards;
+  opacity: 0;
+}
+/* 右下方格：从下进场 */
+.feature-item[data-index="2"]:hover .feature-icon svg rect:nth-child(3) {
+  animation: slideInBottom 0.4s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+/* --- 应用管理（grid）：四个方格顺时针轮换 --- */
+/* rect1 左上→左下：下移 */
+.feature-item[data-index="3"]:hover .feature-icon svg rect:nth-child(1) {
+  transform: translate(0, 11px);
+  transition: transform 0.4s ease;
+}
+/* rect2 右上→左上：左移 */
+.feature-item[data-index="3"]:hover .feature-icon svg rect:nth-child(2) {
+  transform: translate(-11px, 0);
+  transition: transform 0.4s ease;
+}
+/* rect3 右下→右上：上移 */
+.feature-item[data-index="3"]:hover .feature-icon svg rect:nth-child(3) {
+  transform: translate(0, -11px);
+  transition: transform 0.4s ease;
+}
+/* rect4 左下→右下：右移 */
+.feature-item[data-index="3"]:hover .feature-icon svg rect:nth-child(4) {
+  transform: translate(11px, 0);
+  transition: transform 0.4s ease;
+}
+.feature-item[data-index="3"] .feature-icon svg rect {
+  transition: transform 0.4s ease;
+}
+
+/* 功能点图标轻微放大 */
+.feature-item:hover .feature-icon {
+  transform: scale(1.08);
+}
+.feature-icon {
+  transition: transform 0.3s ease;
+}
+
+</style>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@real-human/liquid-glass@1.2.0/dist/liquid-glass.es.js"></script>
+</head>
+<body>
+
+
+<!-- ===== Hero 区域 ===== -->
+<div class="hero-section">
+  <div class="hero-bg" id="heroBg"></div>
+
+  <!-- 固定顶部导航栏 -->
+  <div class="nav-fixed">
+    <glass-element class="nav-glass" width="800" height="56" blur="3" strength="45" radius="28" depth="8" saturate="1.3" brightness="1.1" background-color="rgba(255,255,255,0.07)" style="display:block;width:800px;max-width:100%;margin:0 auto;">
+      <div class="nav">
+      <div class="nav-left">
+        <img src="assets/app-icon.png" alt="启动台牛来版" class="nav-logo-img">
+        <span class="nav-logo-text">启动台 · <span class="accent">牛来版</span></span>
+      </div>
+      <div class="nav-right">
+        <a href="#download" class="nav-download-btn" onclick="handleDownload(event)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          下载
+        </a>
+      </div>
+      </div>
+    </glass-element>
+  </div>
+
+  <!-- Hero 内容 -->
+  <div class="hero-content" id="heroContent">
+    <div class="hero-badge">
+      <span class="hero-badge-icon">
+        <img src="assets/27logo.png" alt="macOS 27">
+      </span>
+      <span class="hero-badge-text">已适配 macOS 27</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="hero-title-line hero-title-inline">
+        启动台
+        <img src="assets/app-icon.png" alt="" class="hero-title-icon">
+        还是那个启动台。
+      </span>
+      <span class="hero-title-line">只是更<span class="yellow">牛</span>了。</span>
+    </h1>
+
+    <p class="hero-sub">
+      把熟悉的 macOS 启动台重新带回来。<br>
+      简单、顺手、不折腾。
+    </p>
+
+    <div class="hero-actions">
+      <a href="#" class="btn-download" onclick="handleDownload(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        免费下载
+      </a>
+    </div>
+
+    <!-- 启动台截图 -->
+    <div class="hero-screenshot-wrap" id="heroScreenshot">
+      <div class="hero-screenshot">
+        <img src="assets/launchpad-real.png" alt="启动台牛来版界面截图">
+        <div class="hero-cow">
+          <img src="assets/cow-frame-1.png" alt="思考牛" id="cowImg">
+        </div>
+      </div>
+      <!-- 牛动画帧预加载（隐藏，供JS使用） -->
+      <div style="display:none;" aria-hidden="true">
+        <img src="assets/cow-frame-1.png" alt="">
+        <img src="assets/cow-frame-2.png" alt="">
+        <img src="assets/cow-frame-3.png" alt="">
+        <img src="assets/cow-frame-4.png" alt="">
+        <img src="assets/cow-frame-5.png" alt="">
+        <img src="assets/cow-frame-6.png" alt="">
+      </div>
+    </div>
+
+    <p class="hero-credit">Designed by Kay Chen · Made with <span>Niulai</span></p>
+  </div>
+</div>
+
+<!-- ===== 功能介绍区域 ===== -->
+<section class="features-section" id="features">
+  <div class="features-inner">
+    <div class="features-left reveal">
+      <h2 class="features-title">熟悉的 macOS 体验，<br class="mobile-break">流畅得像它本来就在这里。</h2>
+      <div class="feature-list">
+        <div class="feature-item active" data-index="0" onclick="switchFeature(0)">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>
+            </div>
+            <h3 class="feature-name">原生体验</h3>
+          </div>
+          <p class="feature-desc">熟悉的 macOS 体验，流畅得像它本来就在这里。</p>
+        </div>
+
+        <div class="feature-item" data-index="1" onclick="switchFeature(1)">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/><path d="M7 16h10"/></svg>
+            </div>
+            <h3 class="feature-name">随手启动</h3>
+          </div>
+          <p class="feature-desc">键盘、手势、触发角，想怎么打开就怎么打开。</p>
+        </div>
+
+        <div class="feature-item" data-index="2" onclick="switchFeature(2)">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="18" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/></svg>
+            </div>
+            <h3 class="feature-name">自由布局</h3>
+          </div>
+          <p class="feature-desc">应用怎么摆、叫什么、要不要出现，都由你决定。</p>
+        </div>
+
+        <div class="feature-item" data-index="3" onclick="switchFeature(3)">
+          <div class="feature-header">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+            </div>
+            <h3 class="feature-name">应用管理</h3>
+          </div>
+          <p class="feature-desc">找应用、整理应用、管理应用，一处搞定。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-right reveal">
+      <div class="feature-showcase">
+        <img src="assets/feature-1.png" alt="原生体验" class="feature-showcase-img active" data-index="0">
+        <img src="assets/feature-2.png" alt="随手启动" class="feature-showcase-img" data-index="1">
+        <img src="assets/feature-3.png" alt="自由布局" class="feature-showcase-img" data-index="2">
+        <img src="assets/feature-4.png" alt="应用管理" class="feature-showcase-img" data-index="3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 收尾 CTA 区域 ===== -->
+<section class="cta-section" id="download">
+  <div class="cta-inner reveal">
+    <h2 class="cta-title">你的 Mac，<br class="mobile-break">值得一个顺手的启动台。</h2>
+    <p class="cta-sub">Spotlight 很好，但你我同样需要启动台。</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary" onclick="handleDownload(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        免费下载
+      </a>
+      <button class="btn-secondary" onclick="openModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        打赏佳哥
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 收款码弹窗 ===== -->
+<div class="modal-overlay" id="payModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()" aria-label="关闭">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <h3 class="modal-title">打赏佳哥</h3>
+    <p class="modal-desc">感谢支持，扫码请我喝杯咖啡</p>
+    <div class="modal-qrcode">
+      <img src="assets/pay-qrcode.jpg" alt="微信收款码">
+    </div>
+    <p class="modal-tip">微信扫码 · Kay(**佳)</p>
+  </div>
+</div>
+
+<script>
+// ===== 同步功能区高度：四项高度 = 右侧配图高度 =====
+function syncFeatureHeight() {
+  var showcase = document.querySelector('.feature-showcase');
+  var featureList = document.querySelector('.feature-list');
+  if (showcase && featureList && window.innerWidth > 860) {
+    featureList.style.height = showcase.offsetHeight + 'px';
+  } else if (featureList) {
+    featureList.style.height = '';
+  }
+}
+window.addEventListener('load', syncFeatureHeight);
+window.addEventListener('resize', syncFeatureHeight);
+setTimeout(syncFeatureHeight, 100);
+
+// ===== 收款码弹窗 =====
+function openModal() {
+  document.getElementById('payModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('payModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e) {
+  if (e.target === e.currentTarget) {
+    closeModal();
+  }
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ===== 下载按钮 =====
+function handleDownload(e) {
+  e.preventDefault();
+  window.open('https://www.kdocs.cn/l/cjo1BPloBhwB', '_blank');
+}
+
+// ===== 功能点切换 + 自动轮播 =====
+var currentFeature = 0;
+var featureTimer = null;
+var featureTotal = 4;
+
+function switchFeature(index) {
+  currentFeature = index;
+  var items = document.querySelectorAll('.feature-item');
+  var images = document.querySelectorAll('.feature-showcase-img');
+  items.forEach(function(item, i) {
+    item.classList.toggle('active', i === index);
+  });
+  images.forEach(function(img, i) {
+    img.classList.toggle('active', i === index);
+  });
+  resetFeatureTimer();
+}
+
+function nextFeature() {
+  var next = (currentFeature + 1) % featureTotal;
+  switchFeature(next);
+}
+
+function startFeatureTimer() {
+  featureTimer = setInterval(nextFeature, 2500);
+}
+
+function resetFeatureTimer() {
+  if (featureTimer) clearInterval(featureTimer);
+  startFeatureTimer();
+}
+
+// 页面加载后启动轮播（始终运行，不暂停）
+window.addEventListener('load', function() {
+  startFeatureTimer();
+});
+
+// ===== 视差滚动 =====
+var heroBg = document.getElementById('heroBg');
+var heroContent = document.getElementById('heroContent');
+var heroScreenshot = document.getElementById('heroScreenshot');
+var ticking = false;
+
+function updateParallax() {
+  var scrollY = window.pageYOffset;
+  var heroHeight = document.querySelector('.hero-section').offsetHeight;
+
+  if (scrollY < heroHeight) {
+    if (heroBg) {
+      heroBg.style.transform = 'translateY(' + (scrollY * 0.25) + 'px)';
+    }
+    if (heroContent) {
+      heroContent.style.transform = 'translateY(' + (scrollY * 0.12) + 'px)';
+    }
+    if (heroScreenshot) {
+      heroScreenshot.style.transform = 'translateY(' + (scrollY * -0.06) + 'px)';
+    }
+  }
+  ticking = false;
+}
+
+window.addEventListener('scroll', function() {
+  if (!ticking) {
+    requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
+}, { passive: true });
+
+// ===== 滚动进入动画 =====
+var revealElements = document.querySelectorAll('.reveal');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.15,
+  rootMargin: '0px 0px -60px 0px'
+});
+
+revealElements.forEach(function(el) {
+  observer.observe(el);
+});
+
+// ===== 修复 glass-element shadow DOM 布局 =====
+function fixGlassLayout() {
+  var glass = document.querySelector('.nav-glass');
+  var isMobile = window.innerWidth <= 860;
+  var navHeight = isMobile ? 48 : 56;
+  
+  if (glass) {
+    // 动态修改宽高
+    if (isMobile) {
+      glass.setAttribute('width', window.innerWidth - 24);
+      glass.style.width = (window.innerWidth - 24) + 'px';
+    } else {
+      glass.setAttribute('width', '800');
+      glass.style.width = '800px';
+    }
+    glass.setAttribute('height', navHeight);
+    glass.style.height = navHeight + 'px';
+  }
+  if (glass && glass.shadowRoot) {
+    var content = glass.shadowRoot.querySelector('.content');
+    var box = glass.shadowRoot.querySelector('.glass-box');
+    if (content) {
+      content.style.justifyContent = 'flex-start';
+      content.style.padding = '0';
+      content.style.alignItems = 'stretch';
+      content.style.height = '100%';
+      content.style.minHeight = navHeight + 'px';
+    }
+    if (box) {
+      box.style.cursor = 'default';
+      box.style.height = navHeight + 'px';
+      box.style.minHeight = navHeight + 'px';
+    }
+    // 注入样式统一高度
+    if (!glass.shadowRoot.querySelector('style[data-fix-height]')) {
+      var style = document.createElement('style');
+      style.setAttribute('data-fix-height', '1');
+      style.textContent = '.glass-box, .content { height: 100% !important; min-height: inherit !important; } *:active { transform: none !important; }';
+      glass.shadowRoot.appendChild(style);
+    }
+  }
+  var nav = document.querySelector('.nav');
+  if (nav) {
+    nav.style.width = '100%';
+    nav.style.flex = '1';
+    nav.style.height = navHeight + 'px';
+  }
+}
+// 窗口大小变化时重新适配
+window.addEventListener('resize', fixGlassLayout);
+window.addEventListener('load', function() {
+  fixGlassLayout();
+  setTimeout(fixGlassLayout, 300);
+  setTimeout(fixGlassLayout, 800);
+});
+
+// ===== Hero 截图 3D 悬停效果 =====
+(function() {
+  var wrap = document.querySelector('.hero-screenshot-wrap');
+  var screen = document.querySelector('.hero-screenshot');
+  var cow = document.querySelector('.hero-cow');
+  if (!wrap || !screen) return;
+  
+  var maxTilt = 6; // 最大倾斜角度
+  var cowHovering = false;
+  
+  // 牛hover时暂停3D倾斜，避免位置错位导致hover中断
+  if (cow) {
+    cow.addEventListener('mouseenter', function() { cowHovering = true; });
+    cow.addEventListener('mouseleave', function() { cowHovering = false; });
+  }
+  
+  wrap.addEventListener('mousemove', function(e) {
+    if (cowHovering) {
+      // 牛在播放动画时完全固定，不做任何transform变化
+      screen.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      return;
+    }
+    var rect = wrap.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width;  // 0~1
+    var y = (e.clientY - rect.top) / rect.height;  // 0~1
+    var rotateY = (x - 0.5) * maxTilt * 2;   // 左右倾斜
+    var rotateX = (0.5 - y) * maxTilt * 2;   // 上下倾斜
+    screen.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
+  });
+  
+  wrap.addEventListener('mouseleave', function() {
+    if (cowHovering) return;
+    screen.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+  });
+})();
+
+// ===== 思考牛挠头帧动画 =====
+(function() {
+  var cow = document.querySelector('.hero-cow');
+  var cowImg = document.getElementById('cowImg');
+  if (!cow || !cowImg) return;
+  
+  var frameImgs = document.querySelectorAll('.hero-screenshot-wrap > div[style*="display:none"] img');
+  var frames = [];
+  frameImgs.forEach(function(img) { frames.push(img.src); });
+  var frameCount = frames.length;
+  var currentFrame = 0;
+  var animTimer = null;
+  var frameInterval = 80; // 每帧80ms
+  
+  // 正序播放一次
+  function playForward() {
+    if (animTimer) clearInterval(animTimer);
+    currentFrame = 0;
+    cowImg.src = frames[currentFrame];
+    animTimer = setInterval(function() {
+      currentFrame++;
+      if (currentFrame >= frameCount) {
+        clearInterval(animTimer);
+        animTimer = null;
+        currentFrame = frameCount - 1;
+        return;
+      }
+      cowImg.src = frames[currentFrame];
+    }, frameInterval);
+  }
+  
+  // 倒序播放一次
+  function playBackward() {
+    if (animTimer) clearInterval(animTimer);
+    if (currentFrame <= 0) {
+      cowImg.src = frames[0];
+      return;
+    }
+    animTimer = setInterval(function() {
+      currentFrame--;
+      if (currentFrame <= 0) {
+        clearInterval(animTimer);
+        animTimer = null;
+        currentFrame = 0;
+        cowImg.src = frames[0];
+        return;
+      }
+      cowImg.src = frames[currentFrame];
+    }, frameInterval);
+  }
+  
+  var isPlaying = false;
+  
+  // 桌面端：hover触发
+  cow.addEventListener('mouseenter', function() {
+    if (!('ontouchstart' in window)) playForward();
+  });
+  cow.addEventListener('mouseleave', function() {
+    if (!('ontouchstart' in window)) playBackward();
+  });
+  
+  // 移动端：点击触发，正序播完后自动倒序回第一帧
+  cow.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (isPlaying) return;
+    isPlaying = true;
+    if (animTimer) clearInterval(animTimer);
+    currentFrame = 0;
+    cowImg.src = frames[currentFrame];
+    animTimer = setInterval(function() {
+      currentFrame++;
+      if (currentFrame >= frameCount) {
+        clearInterval(animTimer);
+        // 正序播完，开始倒序
+        setTimeout(function() {
+          animTimer = setInterval(function() {
+            currentFrame--;
+            if (currentFrame <= 0) {
+              clearInterval(animTimer);
+              animTimer = null;
+              currentFrame = 0;
+              cowImg.src = frames[0];
+              isPlaying = false;
+              return;
+            }
+            cowImg.src = frames[currentFrame];
+          }, frameInterval);
+        }, 150);
+        return;
+      }
+      cowImg.src = frames[currentFrame];
+    }, frameInterval);
+  });
+})();
+
+</script>
+
+<!-- ===== 顶部条固定兜底：兼容「被嵌入预览容器」的场景 ===== -->
+<script>
+/* 普通浏览器里 .nav-fixed 的 position:fixed 本来就正常，这里只做兜底：
+   当页面被放进同源 iframe、而滚动发生在外层容器（应用预览常见）时，
+   iframe 内部不会再产生滚动，position:fixed 会"跟着页面一起滚走"，
+   此时用 transform 把导航条重新钉到外层可视区顶部。 */
+(function () {
+  var nav = document.querySelector('.nav-fixed');
+  if (!nav) return;
+
+  var pw = null, fe = null;
+  try {
+    if (window.parent && window.parent !== window) {
+      fe = window.frameElement;      // 被同源 iframe 包裹时可用；跨域/沙箱会抛异常
+      pw = fe ? window.parent : null;
+    }
+  } catch (e) { pw = null; fe = null; }
+  if (!pw || !fe) return;            // 顶层页面：什么都不做，保持原有固定行为
+
+  function apply() {
+    try {
+      var r = fe.getBoundingClientRect();          // iframe 在外层视口中的位置
+      var maxOff = Math.max(0, document.documentElement.scrollHeight
+                              - nav.offsetHeight - 20);
+      var off = Math.min(Math.max(0, -r.top), maxOff);
+      nav.style.transform = off > 0 ? 'translateY(' + off + 'px)' : '';
+    } catch (e) {}
+  }
+
+  pw.addEventListener('scroll', apply, { passive: true });
+  pw.addEventListener('resize', apply);
+  window.addEventListener('resize', apply);
+  window.addEventListener('load', apply);
+  setTimeout(apply, 300);
+  setTimeout(apply, 800);
+  apply();
+})();
+</script>
+
+<!-- 隐藏 App Studio 运行时注入的右侧悬浮图标（WPS Comate 圆形按钮） -->
+<style id="hide-app-studio-fab">
+  html body [class*="fabContainer"],
+  html body [class*="fabBall"] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+</style>
+
+</body>
+</html>
