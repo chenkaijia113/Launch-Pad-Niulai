@@ -17,7 +17,7 @@
 ## ✨ 预览
 
 <p align="center">
-  <img src="thumbnail_6321974894283659.png" alt="启动台牛来版官网预览" width="80%" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+  <img src="thumbnail_6321974894283659.jpg" alt="启动台牛来版官网预览" width="80%" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
 </p>
 
 > 右下角的思考牛，hover 会挠头哦 🤔
