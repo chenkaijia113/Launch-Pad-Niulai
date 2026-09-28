@@ -992,7 +992,12 @@ document.addEventListener('keydown', function(e) {
 // ===== 下载按钮 =====
 function handleDownload(e) {
   e.preventDefault();
-  window.open('https://www.kdocs.cn/l/cjo1BPloBhwB', '_blank');
+  var a = document.createElement('a');
+  a.href = '启动台-1.7.3-universal.dmg';
+  a.download = '启动台-1.7.3-universal.dmg';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 // ===== 功能点切换 + 自动轮播 =====
