@@ -7,7 +7,7 @@
 把熟悉的 macOS 启动台重新带回来。简单、顺手、不折腾。
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-在线预览-238636?style=for-the-badge&logo=github)](https://chenkaijia113.github.io/Launch-Pad-Niulai/)
-[![Version](https://img.shields.io/badge/version-1.7.4-blue?style=for-the-badge)]()
+[![Version](https://img.shields.io/badge/version-1.7.7-blue?style=for-the-badge)]()
 [![macOS](https://img.shields.io/badge/macOS-27+-000000?style=for-the-badge&logo=apple)]()
 
 </div>
@@ -36,7 +36,7 @@
 
 | 版本 | 下载 |
 |------|------|
-| v1.7.4 Universal | [启动台-1.7.4-universal.dmg](启动台-1.7.4-universal.dmg) |
+| v1.7.7 Universal | [启动台-1.7.7-universal.dmg](启动台-1.7.7-universal.dmg) |
 
 下载后双击 `.dmg`，将「启动台」拖入 Applications 即可。
 
