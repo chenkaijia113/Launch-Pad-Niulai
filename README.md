@@ -6,8 +6,8 @@
 
 把熟悉的 macOS 启动台重新带回来。简单、顺手、不折腾。
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-在线预览-238636?style=for-the-badge&logo=github)](https://chenkaijia113.github.io/Launch-Pad-Niulai/)
-[![Version](https://img.shields.io/badge/version-1.7.9-blue?style=for-the-badge)]()
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-在线预览-F38020?style=for-the-badge&logo=cloudflare)](https://lp.niulai.qd.je/)
+[![Version](https://img.shields.io/badge/version-1.7.11-blue?style=for-the-badge)]()
 [![macOS](https://img.shields.io/badge/macOS-27+-000000?style=for-the-badge&logo=apple)]()
 
 </div>
@@ -26,9 +26,9 @@
 
 ## 🚀 在线访问
 
-官网已部署至 GitHub Pages：
+官网已部署至 Cloudflare Pages（项目名：`launchpad-niulai`）和 GitHub Pages。
 
-**👉 [https://chenkaijia113.github.io/Launch-Pad-Niulai/](https://chenkaijia113.github.io/Launch-Pad-Niulai/)**
+**👉 [https://lp.niulai.qd.je/](https://lp.niulai.qd.je/)**
 
 ---
 
@@ -36,7 +36,9 @@
 
 | 版本 | 下载 |
 |------|------|
-| v1.7.9 Universal | [启动台-1.7.9-universal.dmg](启动台-1.7.9-universal.dmg) |
+| v1.7.11 Universal | [启动台-1.7.11-universal.dmg](启动台-1.7.11-universal.dmg) |
+
+Universal 安装包同时适用于 Apple Silicon 和 Intel Mac。
 
 下载后双击 `.dmg`，将「启动台」拖入 Applications 即可。
 
@@ -52,11 +54,19 @@
 
 ---
 
+## ☁️ 更新部署
+
+将 `index.html`、`assets/`、`_headers` 和对应版本的 `.dmg` 打包上传到 Cloudflare Pages 的 `launchpad-niulai` 项目。更新版本时同步修改三个下载链接、`handleDownload()` 和 `_headers` 中的文件名。
+
+默认地址：https://launchpad-niulai.pages.dev/
+
+DigitalPlat DNS：`lp` 的 CNAME 指向 `launchpad-niulai.pages.dev.`，TTL 为 300 秒。
+
 ## 🛠 技术栈
 
 - 纯 HTML / CSS / JavaScript，零框架依赖
 - Liquid Glass 效果：[@real-human/liquid-glass](https://www.npmjs.com/package/@real-human/liquid-glass)
-- 部署：GitHub Pages
+- 部署：Cloudflare Pages、GitHub Pages
 
 ---
 
