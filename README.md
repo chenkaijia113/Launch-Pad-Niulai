@@ -7,7 +7,7 @@
 把熟悉的 macOS 启动台重新带回来。简单、顺手、不折腾。
 
 [![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-在线预览-F38020?style=for-the-badge&logo=cloudflare)](https://lp.niulai.qd.je/)
-[![Version](https://img.shields.io/badge/version-1.7.11-blue?style=for-the-badge)]()
+[![Version](https://img.shields.io/badge/version-1.7.12-blue?style=for-the-badge)]()
 [![macOS](https://img.shields.io/badge/macOS-27+-000000?style=for-the-badge&logo=apple)]()
 
 </div>
@@ -36,7 +36,7 @@
 
 | 版本 | 下载 |
 |------|------|
-| v1.7.11 Universal | [启动台-1.7.11-universal.dmg](启动台-1.7.11-universal.dmg) |
+| v1.7.12 Universal | [启动台-1.7.12-universal.dmg](启动台-1.7.12-universal.dmg) |
 
 Universal 安装包同时适用于 Apple Silicon 和 Intel Mac。
 
